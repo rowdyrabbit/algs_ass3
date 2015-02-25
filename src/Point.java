@@ -20,12 +20,7 @@ public class Point implements Comparable<Point> {
         public int compare(Point p1, Point p2) {
             double p1Slope = slopeTo(p1);
             double p2Slope = slopeTo(p2);
-            if (p1Slope < p2Slope)
-                return -1;
-            else if (p1Slope > p2Slope)
-                return 1;
-            else
-                return 0;
+            return Double.compare(p1Slope, p2Slope);
         }
     };
 
@@ -53,14 +48,14 @@ public class Point implements Comparable<Point> {
 
     // slope between this point and that point
     public double slopeTo(Point that) {
-        double slope = (that.y - this.y) / (that.x - that.y);
         if (compareTo(that) == 0) {
             return Double.NEGATIVE_INFINITY;
         } else if (this.y == that.y) {
-            return Double.POSITIVE_INFINITY;
+            return +0.0;
         } else if (this.x == that.x) {
-            return +0;
+            return Double.POSITIVE_INFINITY;
         } else {
+            double slope = Double.valueOf(that.y - this.y) / Double.valueOf(that.x - this.x);
             return slope;
         }
     }
@@ -87,6 +82,21 @@ public class Point implements Comparable<Point> {
 
     // unit test
     public static void main(String[] args) {
-        /* YOUR CODE HERE */
+        Point point1, point2;
+
+        /* Vertical line segments should be +Infinity */
+        point1 = new Point(5, 10);
+        point2 = new Point(5, 7);
+        System.out.println(point1.slopeTo(point2) == Double.POSITIVE_INFINITY);
+
+        /* Horizontal line segments should be +0.0 */
+        point1 = new Point(12, 3);
+        point2 = new Point(3, 3);
+        System.out.println(point1.slopeTo(point2) == +0.0);
+
+        /* The slope of a point with himself should be -Infinity */
+        Point p = new Point(1, 5);
+        System.out.println(p.slopeTo(p) == Double.NEGATIVE_INFINITY);
     }
+
 }
